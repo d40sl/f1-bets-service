@@ -1,0 +1,12 @@
+cors:
+  allowed-origin-patterns: ${CORS_ALLOWED_ORIGINS:https://your-production-domain.com}
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    com.f1bets: ${LOG_LEVEL_APP:INFO}
+    org.springframework.web: ${LOG_LEVEL_SPRING:WARN}

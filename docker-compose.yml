@@ -1,0 +1,52 @@
+services:
+  f1bets-db:
+    container_name: f1bets-db
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    ports:
+      - "${DB_EXTERNAL_PORT:-5432}:5432"
+    volumes:
+      - f1bets-data:/var/lib/postgresql/data
+    networks:
+      - f1bets-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  f1bets-app:
+    container_name: f1bets-app
+    build: .
+    ports:
+      - "${APP_EXTERNAL_PORT:-8090}:${APP_PORT:-8090}"
+    environment:
+      - SERVER_PORT=${APP_PORT:-8090}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-default}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-f1bets-db}:5432/${POSTGRES_DB:?POSTGRES_DB is required}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:?POSTGRES_USER is required}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      - OPENF1_MAX_SESSIONS=${OPENF1_MAX_SESSIONS:-6}
+      - OPENF1_DRIVER_DELAY_MS=${OPENF1_DRIVER_DELAY_MS:-500}
+    depends_on:
+      f1bets-db:
+        condition: service_healthy
+    networks:
+      - f1bets-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:${APP_PORT:-8090}/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  f1bets-network:
+    name: f1bets-network
+    driver: bridge
+
+volumes:
+  f1bets-data:
