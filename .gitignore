@@ -1,0 +1,70 @@
+# Build output
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-*
+.nbproject/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment and secrets
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.jks
+*.p12
+*.keystore
+*.truststore
+credentials.json
+secrets.yml
+secrets.yaml
+
+# Test and coverage
+jacoco/
+*.exec
+coverage/
+test-results/
+surefire-reports/
+failsafe-reports/
+
+# Docker overrides
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+
+# Temporary files
+*.orig
+*.bak
+*.tmp
+*.temp
+
+# Package manager
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Spring Boot
+spring-shell.log
