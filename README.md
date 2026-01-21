@@ -17,6 +17,10 @@ The API will be available at `http://localhost:8090`.
 
 > **Note:** For the sake of simplicity, this project does not include authentication. CORS is configured to allow common development origins. In a production environment, you would add proper authentication (e.g., JWT, OAuth2), authorization, and restrict CORS to trusted origins.
 
+## API and Betting System Demo
+
+Loom walkthrough: https://www.loom.com/share/b0fd3659c062432cba28c7c5e179b304
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
